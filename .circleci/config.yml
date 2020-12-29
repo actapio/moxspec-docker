@@ -1,0 +1,36 @@
+image_config: &image_config
+  IMAGE_NAME: mox-centos
+  IMAGE_TAG: 7
+
+version: 2
+jobs:
+  build:
+    machine: true
+    environment:
+      <<: *image_config
+    steps:
+      - checkout
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - run: docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
+      - run: docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG && sleep 10
+      - store_artifacts:
+          path: Dockerfile
+  test_image:
+    docker:
+      - image: $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+        environment:
+          <<: *image_config
+    steps:
+      - checkout
+      - run:
+          name: go version
+workflows:
+  version: 2
+  dockerfile:
+    jobs:
+      - build:
+          context: org-global
+      - test_image:
+          context: org-global
+          requires:
+            - build

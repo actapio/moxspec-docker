@@ -20,9 +20,11 @@ jobs:
       <<: *image_config
     docker:
       - image: $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+        auth:
+            username: $DOCKER_USERNAME
+            password: $DOCKER_PASSWORD
     steps:
       - checkout
-      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - run:
           name: print go version
           command: go version

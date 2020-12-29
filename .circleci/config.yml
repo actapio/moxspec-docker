@@ -23,7 +23,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: go version
+          name: print go version
+          command: go version
 workflows:
   version: 2
   dockerfile:

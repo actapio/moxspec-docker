@@ -16,10 +16,10 @@ jobs:
       - store_artifacts:
           path: Dockerfile
   test_image:
+    environment:
+      <<: *image_config
     docker:
       - image: $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
-        environment:
-          <<: *image_config
     steps:
       - checkout
       - run:

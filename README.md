@@ -1,2 +1,2 @@
-mox-dockerfile-centos
+moxspec-dockerfile-centos
 ===

@@ -29,8 +29,8 @@ workflows:
   dockerfile:
     jobs:
       - build:
-          context: org-global
+          context: moxspec
       - test_image:
-          context: org-global
+          context: moxspec
           requires:
             - build

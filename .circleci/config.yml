@@ -11,15 +11,15 @@ jobs:
     steps:
       - checkout
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - run: docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
-      - run: docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG && sleep 10
+      - run: docker build -t actapio/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
+      - run: docker push actapio/$IMAGE_NAME:$IMAGE_TAG && sleep 10
       - store_artifacts:
           path: Dockerfile
   test_image:
     environment:
       <<: *image_config
     docker:
-      - image: $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+      - image: actapio/$IMAGE_NAME:$IMAGE_TAG
         auth:
             username: $DOCKER_USERNAME
             password: $DOCKER_PASSWORD

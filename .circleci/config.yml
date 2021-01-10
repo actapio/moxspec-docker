@@ -12,9 +12,15 @@ jobs:
       - checkout
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - run: docker build -t actapio/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
+  build-and-push:
+    machine: true
+    environment:
+      <<: *image_config
+    steps:
+      - checkout
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - run: docker build -t actapio/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
       - run: docker push actapio/$IMAGE_NAME:$IMAGE_TAG && sleep 10
-      - store_artifacts:
-          path: Dockerfile
   test_image:
     environment:
       <<: *image_config
@@ -28,13 +34,25 @@ jobs:
       - run:
           name: print go version
           command: go version
+
 workflows:
   version: 2
   dockerfile:
     jobs:
       - build:
           context: moxspec
+          filters:
+            branches:
+              ignore: main
+      - build-and-push:
+          context: moxspec
+          filters:
+            branches:
+              only: main
       - test_image:
           context: moxspec
           requires:
-            - build
+            - build-and-push
+          filters:
+            branches:
+              only: main

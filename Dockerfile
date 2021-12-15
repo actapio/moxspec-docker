@@ -13,6 +13,7 @@ RUN yum install rpm-build git make gcc -y \
         && go get golang.org/x/tools/cmd/goimports \
         && go get golang.org/x/lint/golint \
         && go get github.com/digitalocean/go-smbios/smbios \
+        && go get github.com/vishvananda/netlink \
         && go get golang.org/x/crypto/ssh/terminal \
         && go get github.com/kylelemons/godebug/pretty \
         && go get github.com/kylelemons/godebug/diff \
